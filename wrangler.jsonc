@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "guilherme-araujo-portfolio",
+  "compatibility_date": "2026-08-12",
+  "main": "./worker/index.js",
+  "assets": {
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  }
+}
