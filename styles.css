@@ -2441,6 +2441,10 @@ main,
     scroll-padding-top: 20px;
   }
 
+  .splash-cursor {
+    opacity: 0.68;
+  }
+
   .background-grid {
     background-size: 44px 44px;
   }
@@ -2865,10 +2869,6 @@ main,
 }
 
 @media (hover: none), (pointer: coarse) {
-  .splash-cursor {
-    display: none;
-  }
-
   .project-card__inner {
     transform: none !important;
   }

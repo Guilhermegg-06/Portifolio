@@ -17,17 +17,19 @@ document.getElementById("year").textContent = String(new Date().getFullYear());
 
 function mountSplashCursor() {
   const canvas = document.getElementById("splash-cursor-canvas");
-  if (!canvas || !finePointer.matches || reduceMotion.matches || saveData) return;
+  if (!canvas || reduceMotion.matches || saveData) return;
+
+  const compactSplash = compactViewport.matches || !finePointer.matches;
 
   const start = () => {
     try {
       const cleanup = initSplashCursor(canvas, {
-        SIM_RESOLUTION: 128,
-        DYE_RESOLUTION: 1024,
+        SIM_RESOLUTION: compactSplash ? 64 : 128,
+        DYE_RESOLUTION: compactSplash ? 384 : 1440,
         DENSITY_DISSIPATION: 3.5,
         VELOCITY_DISSIPATION: 2,
         PRESSURE: 0.1,
-        PRESSURE_ITERATIONS: 20,
+        PRESSURE_ITERATIONS: compactSplash ? 12 : 20,
         CURL: 3,
         SPLAT_RADIUS: 0.2,
         SPLAT_FORCE: 6000,
