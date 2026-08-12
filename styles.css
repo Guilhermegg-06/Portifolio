@@ -105,18 +105,6 @@ canvas {
   outline-offset: 4px;
 }
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 .color-bends {
   position: fixed;
   z-index: 0;
@@ -948,50 +936,6 @@ main,
   height: 1px;
   overflow: hidden;
   background: var(--line);
-}
-
-.scroll-reveal-section {
-  position: relative;
-  display: grid;
-  align-items: center;
-  width: var(--container);
-  min-height: 82svh;
-  margin: 0 auto;
-  padding: 12svh 0;
-}
-
-.scroll-reveal-section::before {
-  content: "MANIFESTO / EM MOVIMENTO";
-  position: absolute;
-  top: 10svh;
-  left: 0;
-  color: var(--lime);
-  font: 600 9px/1 var(--font-mono);
-  letter-spacing: 0.16em;
-}
-
-.scroll-reveal {
-  max-width: 1120px;
-  margin: 20px 0;
-  color: var(--text);
-  font-size: clamp(2.55rem, 6.6vw, 6.5rem);
-  font-weight: 700;
-  line-height: 0.98;
-  letter-spacing: -0.065em;
-}
-
-.scroll-reveal-text {
-  display: block;
-}
-
-.scroll-reveal .word {
-  display: inline-block;
-}
-
-.scroll-reveal.is-static .word {
-  opacity: 1 !important;
-  filter: none !important;
-  transform: none !important;
 }
 
 .scroll-cue i::after {
@@ -2499,22 +2443,6 @@ main,
 
   .splash-cursor {
     opacity: 0.68;
-  }
-
-  .scroll-reveal-section {
-    min-height: 72svh;
-    padding: 96px 0 72px;
-  }
-
-  .scroll-reveal-section::before {
-    top: 68px;
-    font-size: 7px;
-  }
-
-  .scroll-reveal {
-    font-size: clamp(2.35rem, 12.5vw, 4.3rem);
-    line-height: 1.02;
-    letter-spacing: -0.055em;
   }
 
   .background-grid {

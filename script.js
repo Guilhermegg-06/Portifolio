@@ -1,5 +1,4 @@
 import { initSplashCursor } from "./splash-cursor.js";
-import { initScrollReveal } from "./scroll-reveal.js";
 
 const root = document.documentElement;
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -56,17 +55,6 @@ function mountSplashCursor() {
 }
 
 mountSplashCursor();
-
-const cleanupScrollReveal = initScrollReveal({
-  baseOpacity: 0.1,
-  enableBlur: true,
-  baseRotation: 3,
-  blurStrength: 4,
-});
-
-window.addEventListener("pagehide", (event) => {
-  if (!event.persisted) cleanupScrollReveal();
-}, { once: true });
 
 const intro = document.querySelector(".intro-screen");
 if (intro) {
