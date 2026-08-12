@@ -266,8 +266,8 @@ async function initThreeScene() {
 
     const knotGeometry = new THREE.TorusKnotGeometry(1.08, 0.34, 176, 28, 2, 3);
     const knotMaterial = new THREE.MeshPhysicalMaterial({
-      color: 0xb8f34a,
-      emissive: 0x182a07,
+      color: 0x8b5cf6,
+      emissive: 0x1f0b3d,
       emissiveIntensity: 0.55,
       roughness: 0.2,
       metalness: 0.2,
@@ -280,7 +280,7 @@ async function initThreeScene() {
     sculpture.add(knot);
 
     const wireMaterial = new THREE.MeshBasicMaterial({
-      color: 0xdfffa0,
+      color: 0xe9d5ff,
       wireframe: true,
       transparent: true,
       opacity: 0.13,
@@ -292,7 +292,7 @@ async function initThreeScene() {
 
     const coreGeometry = new THREE.IcosahedronGeometry(0.58, 3);
     const coreMaterial = new THREE.MeshBasicMaterial({
-      color: 0x65d9ff,
+      color: 0xc4b5fd,
       wireframe: true,
       transparent: true,
       opacity: 0.11,
@@ -302,7 +302,7 @@ async function initThreeScene() {
     sculpture.add(core);
 
     const ringMaterial = new THREE.MeshBasicMaterial({
-      color: 0x65d9ff,
+      color: 0xc4b5fd,
       transparent: true,
       opacity: 0.25,
       depthWrite: false,
@@ -316,7 +316,7 @@ async function initThreeScene() {
       ringGeometry,
       ringMaterial.clone(),
     );
-    ringTwo.material.color.setHex(0xb8f34a);
+    ringTwo.material.color.setHex(0x8b5cf6);
     ringTwo.material.opacity = 0.2;
     ringTwo.rotation.set(-0.65, 0.85, -0.28);
     ringTwo.scale.setScalar(1.14);
@@ -339,7 +339,7 @@ async function initThreeScene() {
       new THREE.BufferAttribute(pointPositions, 3),
     );
     const pointsMaterial = new THREE.PointsMaterial({
-      color: 0xd9ff92,
+      color: 0xe9d5ff,
       size: 0.026,
       transparent: true,
       opacity: 0.62,
@@ -349,13 +349,13 @@ async function initThreeScene() {
     const points = new THREE.Points(pointsGeometry, pointsMaterial);
     sculpture.add(points);
 
-    scene.add(new THREE.AmbientLight(0xb8d7df, 0.75));
+    scene.add(new THREE.AmbientLight(0xc4b5fd, 0.72));
 
-    const limeLight = new THREE.PointLight(0xb8f34a, 24, 12, 2);
+    const limeLight = new THREE.PointLight(0x7c3aed, 24, 12, 2);
     limeLight.position.set(-2.3, 2.5, 3.2);
     scene.add(limeLight);
 
-    const cyanLight = new THREE.PointLight(0x65d9ff, 22, 12, 2);
+    const cyanLight = new THREE.PointLight(0xc4b5fd, 20, 12, 2);
     cyanLight.position.set(2.7, -1.8, 2.7);
     scene.add(cyanLight);
 
