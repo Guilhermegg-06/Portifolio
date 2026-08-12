@@ -1,3 +1,5 @@
+import { initSplashCursor } from "./splash-cursor.js";
+
 const root = document.documentElement;
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
@@ -13,117 +15,44 @@ function loadThree() {
 root.classList.add("motion-ready");
 document.getElementById("year").textContent = String(new Date().getFullYear());
 
-function initSpinCursor() {
-  const cursor = document.querySelector(".spin-cursor");
-  if (!cursor || !finePointer.matches || reduceMotion.matches) return;
+function mountSplashCursor() {
+  const canvas = document.getElementById("splash-cursor-canvas");
+  if (!canvas || !finePointer.matches || reduceMotion.matches || saveData) return;
 
-  const arrowRestAngle = Math.atan2(-15, -12);
-  const cursorSize = 30;
-  const followTau = 0.02;
-  const velocityTau = 0.05;
-  let targetX = -9999;
-  let targetY = -9999;
-  let x = targetX;
-  let y = targetY;
-  let velocityX = 0;
-  let velocityY = 0;
-  let angle = 0;
-  let pressed = 0;
-  let isDown = false;
-  let isInside = false;
-  let hasPosition = false;
-  let frameId = 0;
-  let previousTime = performance.now();
+  const start = () => {
+    try {
+      const cleanup = initSplashCursor(canvas, {
+        SIM_RESOLUTION: 128,
+        DYE_RESOLUTION: 1024,
+        DENSITY_DISSIPATION: 3.5,
+        VELOCITY_DISSIPATION: 2,
+        PRESSURE: 0.1,
+        PRESSURE_ITERATIONS: 20,
+        CURL: 3,
+        SPLAT_RADIUS: 0.2,
+        SPLAT_FORCE: 6000,
+        COLOR_UPDATE_SPEED: 10,
+        SHADING: true,
+        RAINBOW_MODE: false,
+        COLOR: "#A855F7",
+      });
 
-  const angleDelta = (from, to) => {
-    let delta = (to - from) % (Math.PI * 2);
-    if (delta > Math.PI) delta -= Math.PI * 2;
-    if (delta < -Math.PI) delta += Math.PI * 2;
-    return delta;
+      window.addEventListener("pagehide", (event) => {
+        if (!event.persisted) cleanup();
+      }, { once: true });
+    } catch (error) {
+      console.warn("O efeito fluido do cursor não pôde ser carregado.", error);
+    }
   };
 
-  const handlePointerMove = (event) => {
-    if (event.pointerType && event.pointerType !== "mouse") return;
-    targetX = event.clientX;
-    targetY = event.clientY;
-    if (!hasPosition || !isInside) {
-      x = targetX;
-      y = targetY;
-      velocityX = 0;
-      velocityY = 0;
-      hasPosition = true;
-    }
-    isInside = true;
-    root.classList.add("has-spin-cursor");
-    const interactiveTarget = event.target instanceof Element
-      ? event.target.closest("a, button, [role='button']")
-      : null;
-    cursor.classList.toggle("is-interactive", Boolean(interactiveTarget));
-  };
-
-  const handlePointerLeave = () => {
-    isInside = false;
-    cursor.style.opacity = "0";
-    root.classList.remove("has-spin-cursor");
-  };
-
-  const handlePointerDown = () => { isDown = true; };
-  const handlePointerUp = () => { isDown = false; };
-
-  function drawCursor(now) {
-    const deltaTime = Math.min(0.05, Math.max(0, (now - previousTime) / 1000));
-    previousTime = now;
-    const followEase = 1 - Math.exp(-deltaTime / followTau);
-    const previousX = x;
-    const previousY = y;
-    x += (targetX - x) * followEase;
-    y += (targetY - y) * followEase;
-
-    if (deltaTime > 0) {
-      const velocityEase = 1 - Math.exp(-deltaTime / velocityTau);
-      velocityX += ((x - previousX) / deltaTime - velocityX) * velocityEase;
-      velocityY += ((y - previousY) / deltaTime - velocityY) * velocityEase;
-    }
-
-    const speed = Math.hypot(velocityX, velocityY);
-    if (speed > 40) {
-      const targetAngle = Math.atan2(velocityY, velocityX) - arrowRestAngle;
-      angle += angleDelta(angle, targetAngle) * (1 - Math.exp(-deltaTime / 0.06));
-    }
-
-    const stretch = 1 + Math.min(speed / 3000, 0.35);
-    const squash = 1 / Math.sqrt(stretch);
-    pressed += ((isDown ? 1 : 0) - pressed) * (1 - Math.exp(-deltaTime / 0.05));
-    const pressScale = 1 - pressed * 0.2;
-    const scale = (cursorSize / 21) * pressScale;
-    const interactiveScale = cursor.classList.contains("is-interactive") ? 1.08 : 1;
-
-    cursor.style.opacity = hasPosition && isInside ? "1" : "0";
-    cursor.style.transform =
-      "translate3d(" + x + "px," + y + "px,0) " +
-      "rotate(" + angle + "rad) " +
-      "scale(" + scale * squash * interactiveScale + "," + scale * stretch * interactiveScale + ")";
-    frameId = requestAnimationFrame(drawCursor);
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(start, { timeout: 700 });
+  } else {
+    window.setTimeout(start, 120);
   }
-
-  window.addEventListener("pointermove", handlePointerMove, { passive: true });
-  document.documentElement.addEventListener("pointerleave", handlePointerLeave);
-  window.addEventListener("pointerdown", handlePointerDown, { passive: true });
-  window.addEventListener("pointerup", handlePointerUp, { passive: true });
-  frameId = requestAnimationFrame(drawCursor);
-
-  window.addEventListener("pagehide", (event) => {
-    if (event.persisted) return;
-    cancelAnimationFrame(frameId);
-    root.classList.remove("has-spin-cursor");
-    window.removeEventListener("pointermove", handlePointerMove);
-    document.documentElement.removeEventListener("pointerleave", handlePointerLeave);
-    window.removeEventListener("pointerdown", handlePointerDown);
-    window.removeEventListener("pointerup", handlePointerUp);
-  }, { once: true });
 }
 
-initSpinCursor();
+mountSplashCursor();
 
 const intro = document.querySelector(".intro-screen");
 if (intro) {
@@ -376,6 +305,8 @@ const colorBendsConfig = Object.freeze({
   intensity: 1.5,
   bandWidth: 6,
   transparent: true,
+  autoRotate: 0,
+  color: "#A855F7",
 });
 
 const colorBendsVertexShader = `
@@ -485,7 +416,6 @@ async function initColorBends() {
     };
     colorBendsConfig.colors.forEach((color, index) => uniformColors[index].copy(toVector(color)));
 
-    const rotationRadians = (colorBendsConfig.rotation * Math.PI) / 180;
     const material = new THREE.ShaderMaterial({
       vertexShader: colorBendsVertexShader,
       fragmentShader: colorBendsFragmentShader,
@@ -495,7 +425,7 @@ async function initColorBends() {
         uCanvas: { value: new THREE.Vector2(1, 1) },
         uTime: { value: 0 },
         uSpeed: { value: colorBendsConfig.speed },
-        uRot: { value: new THREE.Vector2(Math.cos(rotationRadians), Math.sin(rotationRadians)) },
+        uRot: { value: new THREE.Vector2(1, 0) },
         uColorCount: { value: colorBendsConfig.colors.length },
         uColors: { value: uniformColors },
         uTransparent: { value: colorBendsConfig.transparent ? 1 : 0 },
@@ -547,6 +477,9 @@ async function initColorBends() {
       previousFrame = time;
       const delta = Math.min(clock.getDelta(), 0.05);
       material.uniforms.uTime.value = clock.elapsedTime;
+      const rotation = (colorBendsConfig.rotation % 360) + colorBendsConfig.autoRotate * clock.elapsedTime;
+      const rotationRadians = (rotation * Math.PI) / 180;
+      material.uniforms.uRot.value.set(Math.cos(rotationRadians), Math.sin(rotationRadians));
       pointerCurrent.lerp(pointerTarget, Math.min(1, delta * 8));
       material.uniforms.uPointer.value.copy(pointerCurrent);
       renderer.render(scene, camera);
