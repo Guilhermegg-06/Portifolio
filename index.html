@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#050407" />
+
+    <title>Guilherme Araújo — Desenvolvedor de Software</title>
+    <meta
+      name="description"
+      content="Portfólio de Guilherme Araújo, desenvolvedor de software e estudante de Ciência da Computação em Maceió. Projetos web, APIs REST e sistemas completos."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:title" content="Guilherme Araújo — Desenvolvedor de Software" />
+    <meta
+      property="og:description"
+      content="Aplicações web, APIs REST e sistemas completos — do front-end ao back-end."
+    />
+    <meta property="og:image" content="/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Guilherme Araújo — Desenvolvedor de Software" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Guilherme Araújo — Desenvolvedor de Software" />
+    <meta
+      name="twitter:description"
+      content="Aplicações web, APIs REST e sistemas completos — do front-end ao back-end."
+    />
+    <meta name="twitter:image" content="/og.png" />
+
+    <link rel="stylesheet" href="/styles.css" />
+    <script type="module" src="/script.js"></script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <div class="intro-screen" aria-hidden="true">
+      <span>GG / PORTFÓLIO</span>
+      <span class="intro-screen__year">2026</span>
+      <i></i>
+    </div>
+
+    <div class="scroll-progress" aria-hidden="true"><span></span></div>
+    <div id="color-bends-root" class="color-bends" aria-hidden="true"></div>
+    <div class="background-grid" aria-hidden="true"></div>
+    <div class="noise" aria-hidden="true"></div>
+
+    <div class="splash-cursor" aria-hidden="true">
+      <canvas id="splash-cursor-canvas"></canvas>
+    </div>
+
+    <header class="site-header" data-reveal>
+      <nav class="nav-shell" aria-label="Navegação principal">
+        <a class="brand magnetic" href="#inicio" aria-label="Guilherme Araújo — início">
+          <span>GG</span><i aria-hidden="true"></i>
+        </a>
+
+        <div class="nav-links">
+          <a href="#sobre">Sobre</a>
+          <a href="#projetos">Projetos</a>
+          <a href="#contato">Contato</a>
+        </div>
+
+        <a class="nav-cta magnetic" href="mailto:ggdev0001@gmail.com">
+          <span>Vamos conversar</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      </nav>
+    </header>
+
+    <main id="conteudo">
+      <section class="hero" id="inicio" aria-labelledby="hero-title">
+        <div class="hero__copy">
+          <a class="availability" href="#contato" data-reveal>
+            <i aria-hidden="true"></i>
+            <span>Disponível para a primeira oportunidade</span>
+            <b aria-hidden="true">↘</b>
+          </a>
+
+          <h1 id="hero-title" tabindex="0" aria-label="Olá, eu sou Guilherme Araújo.">
+            <span class="hero__eyebrow" aria-hidden="true" data-reveal>Olá, eu sou</span>
+            <span class="hero__name" data-text="Guilherme" aria-hidden="true" data-reveal>Guilherme</span>
+            <span class="hero__name hero__name--outline" data-text="Araújo." aria-hidden="true" data-reveal>Araújo.</span>
+          </h1>
+
+          <p class="hero__lead" data-reveal>
+            Desenvolvedor de Software e estudante de Ciência da Computação. Crio
+            <strong>aplicações web, APIs REST e sistemas completos</strong> — da interface à regra de negócio.
+          </p>
+
+          <div class="hero__actions" data-reveal>
+            <a class="button button--halo magnetic" href="#projetos">
+              <span>Explorar projetos</span>
+              <span class="button__arrow" aria-hidden="true">↘</span>
+            </a>
+            <a
+              class="button button--halo button--halo-muted magnetic"
+              href="https://github.com/Guilhermegg-06"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub de Guilherme Araújo (abre em nova aba)"
+            >
+              <span>GitHub</span>
+              <span class="button__arrow" aria-hidden="true">↗</span>
+            </a>
+          </div>
+
+          <div class="hero__meta" data-reveal>
+            <span>BR / Maceió — AL</span>
+            <span>Presencial + remoto</span>
+          </div>
+        </div>
+
+        <div class="hero-stage" aria-label="Tecnologias e ferramentas que fazem parte da minha stack" data-reveal>
+          <div class="hero-stage__halo" aria-hidden="true"></div>
+          <div class="orb-fallback" aria-hidden="true">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+          <div class="float-chip float-chip--one">
+            <small>FRONT-END</small>
+            <strong>React · TypeScript · JavaScript · HTML · CSS</strong>
+          </div>
+          <div class="float-chip float-chip--two">
+            <small>BACK-END</small>
+            <strong>Java · Spring Boot</strong>
+          </div>
+          <div class="float-chip float-chip--three">
+            <span>REST</span>
+          </div>
+          <div class="float-chip float-chip--data">
+            <small>BANCO DE DADOS</small>
+            <strong>PostgreSQL · Supabase · Firebase</strong>
+          </div>
+          <div class="float-chip float-chip--devops">
+            <small>DEVOPS & CLOUD</small>
+            <strong>Docker · Git · Actions · AWS · Vercel · Vite</strong>
+          </div>
+          <div class="float-chip float-chip--tools">
+            <small>FERRAMENTAS & DESIGN</small>
+            <strong>VS Code · IntelliJ · Figma · Postman</strong>
+          </div>
+          <div class="axis-label axis-label--x" aria-hidden="true">X / 01</div>
+          <div class="axis-label axis-label--y" aria-hidden="true">SISTEMAS EM MOVIMENTO</div>
+        </div>
+
+        <a class="scroll-cue" href="#sobre" aria-label="Ir para a seção sobre" data-reveal>
+          <span>SCROLL</span>
+          <i aria-hidden="true"></i>
+        </a>
+      </section>
+
+      <section class="section about" id="sobre" aria-labelledby="about-title">
+        <header class="section-heading" data-reveal>
+          <div>
+            <span class="section-index">01 / SOBRE</span>
+            <h2 id="about-title">Código com contexto.<br />Curiosidade com direção.</h2>
+          </div>
+          <p>
+            Construo minha base entre produto, interface e engenharia — entendendo o problema antes de escolher a tecnologia.
+          </p>
+        </header>
+
+        <div class="bento-grid">
+          <article class="bento-card bento-card--profile spotlight" data-reveal>
+            <div class="profile-photo">
+              <img
+                src="/guilherme-araujo.jpg"
+                alt="Guilherme Araújo"
+                width="685"
+                height="960"
+                loading="lazy"
+                decoding="async"
+              />
+              <span aria-hidden="true">GG / 06</span>
+            </div>
+            <div class="profile-copy">
+              <span class="card-label">QUEM SOU</span>
+              <h3>Desenvolvedor em formação, construindo de ponta a ponta.</h3>
+              <p>
+                Sou Guilherme Araújo, graduando em Ciência da Computação em Maceió. Desenvolvo soluções que conectam interfaces claras, APIs bem definidas e dados organizados.
+              </p>
+              <div class="profile-location">
+                <span aria-hidden="true">⌖</span>
+                <span>Maceió, Alagoas — Brasil</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="bento-card bento-card--status spotlight" data-reveal>
+            <span class="card-label">AGORA</span>
+            <div class="status-orbit" aria-hidden="true">
+              <span></span><span></span><i></i>
+            </div>
+            <h3>Aberto à primeira oportunidade em tecnologia.</h3>
+            <p>Disponível para equipes em Maceió ou para trabalho remoto.</p>
+            <a href="#contato">Iniciar conversa <span aria-hidden="true">↗</span></a>
+          </article>
+
+          <article class="bento-card bento-card--stack spotlight" data-reveal>
+            <span class="card-label">STACK PRINCIPAL</span>
+            <div class="stack-list" aria-label="Tecnologias principais">
+              <div><span>01</span><strong>Java</strong><small>BACK-END</small></div>
+              <div><span>02</span><strong>Spring Boot</strong><small>APIs REST</small></div>
+              <div><span>03</span><strong>React</strong><small>FRONT-END</small></div>
+              <div><span>04</span><strong>TypeScript</strong><small>FRONT-END</small></div>
+              <div><span>05</span><strong>PostgreSQL</strong><small>DADOS</small></div>
+            </div>
+          </article>
+
+          <article class="bento-card bento-card--learning spotlight" data-reveal>
+            <span class="card-label">EM EVOLUÇÃO</span>
+            <h3>Próximas camadas</h3>
+            <div class="learning-cloud" aria-label="Tecnologias em estudo">
+              <span>Testes</span>
+              <span>TDD</span>
+              <span>Docker</span>
+              <span>Cloud</span>
+              <span>CI/CD</span>
+            </div>
+            <p>Estudando qualidade e entrega contínua para transformar código em software confiável.</p>
+          </article>
+
+          <article class="bento-card bento-card--code" data-reveal>
+            <div class="code-window__top" aria-hidden="true">
+              <span></span><span></span><span></span><small>focus.ts</small>
+            </div>
+            <pre aria-label="Resumo técnico"><code><span class="code-muted">const</span> foco = {
+  frontEnd: [<span class="code-accent">"React"</span>, <span class="code-accent">"TypeScript"</span>],
+  backEnd: [<span class="code-cyan">"Java"</span>, <span class="code-cyan">"Spring Boot"</span>],
+  dados: <span class="code-accent">"PostgreSQL"</span>,
+  objetivo: <span class="code-white">"resolver problemas reais"</span>
+};</code></pre>
+          </article>
+
+          <article class="bento-card bento-card--lanyard" aria-labelledby="lanyard-title" data-reveal>
+            <div class="lanyard-intro">
+              <span class="card-label">IDENTIDADE / 3D</span>
+              <h3 id="lanyard-title">Um crachá que também entra em movimento.</h3>
+              <p>Arraste para explorar a interação.</p>
+            </div>
+            <div id="lanyard-root" class="lanyard-mount" aria-hidden="true"></div>
+          </article>
+        </div>
+      </section>
+      <section class="section projects" id="projetos" aria-labelledby="projects-title">
+        <header class="section-heading section-heading--projects" data-reveal>
+          <div>
+            <span class="section-index">02 / PROJETOS</span>
+            <h2 id="projects-title">Ideias que já<br />saíram do papel.</h2>
+          </div>
+          <p>
+            Uma seleção de projetos acadêmicos e comerciais que mostra diferentes lados do meu desenvolvimento.
+          </p>
+        </header>
+
+        <div class="project-list">
+          <article class="project-card project-card--amy spotlight" data-tilt data-reveal>
+            <div class="project-card__inner">
+              <div class="project-visual project-visual--amy" aria-hidden="true">
+                <div class="project-browser">
+                  <div class="project-browser__bar"><i></i><i></i><i></i><span>amycursos / eventos</span></div>
+                  <div class="amy-layout">
+                    <div class="amy-sidebar"><b>A</b><span></span><span></span><span></span></div>
+                    <div class="amy-main">
+                      <div class="amy-top"><span>Próximos eventos</span><i></i></div>
+                      <div class="amy-cards"><span></span><span></span><span></span></div>
+                      <div class="amy-row"><i></i><i></i><i></i><i></i></div>
+                    </div>
+                  </div>
+                </div>
+                <span class="visual-number">01</span>
+                <div class="visual-pill">FULL STACK</div>
+              </div>
+
+              <div class="project-content">
+                <div class="project-meta">
+                  <span>PROJETO ACADÊMICO EM EQUIPE</span>
+                  <span>2026</span>
+                </div>
+                <h3>AmyCursos</h3>
+                <p>
+                  Plataforma para eventos acadêmicos, inscrições, controle de presença e emissão de certificados.
+                </p>
+                <ul class="tag-list" aria-label="Tecnologias do AmyCursos">
+                  <li>Java</li><li>Spring Boot</li><li>PostgreSQL</li><li>React</li>
+                </ul>
+                <div class="project-actions">
+                  <a href="https://cursos-amry.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Ver AmyCursos (abre em nova aba)">Ver projeto <span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/Guilhermegg-06/Projeto-Afya-2up" target="_blank" rel="noopener noreferrer" aria-label="Código do AmyCursos no GitHub (abre em nova aba)">Código <span aria-hidden="true">↗</span></a>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card project-card--elde spotlight" data-tilt data-reveal>
+            <div class="project-card__inner">
+              <div class="project-visual project-visual--elde" aria-hidden="true">
+                <div class="elde-word">ELDE</div>
+                <div class="perfume perfume--one"><i></i><span></span></div>
+                <div class="perfume perfume--two"><i></i><span></span></div>
+                <div class="catalog-card"><small>ESSÊNCIA 042</small><strong>Notas que ficam.</strong><i></i></div>
+                <span class="visual-number">02</span>
+                <div class="visual-pill">E-COMMERCE</div>
+              </div>
+
+              <div class="project-content">
+                <div class="project-meta">
+                  <span>PRODUTO WEB</span>
+                  <span>2026</span>
+                </div>
+                <h3>ELDEPARFUM</h3>
+                <p>
+                  Catálogo e plataforma de vendas de contratipos de perfumes, com painel administrativo e banco de dados.
+                </p>
+                <ul class="tag-list" aria-label="Tecnologias do ELDEPARFUM">
+                  <li>React</li><li>TypeScript</li><li>Supabase</li><li>PostgreSQL</li>
+                </ul>
+                <div class="project-actions">
+                  <a href="https://eldeparfum.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Ver ELDEPARFUM (abre em nova aba)">Ver projeto <span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/Guilhermegg-06/ELDEPARFUM" target="_blank" rel="noopener noreferrer" aria-label="Código do ELDEPARFUM no GitHub (abre em nova aba)">Código <span aria-hidden="true">↗</span></a>
+                </div>
+              </div>
+            </div>
+          </article>
+          <article class="project-card project-card--lucendy spotlight" data-tilt data-reveal>
+            <div class="project-card__inner">
+              <div class="project-visual project-visual--lucendy" aria-hidden="true">
+                <div class="lucendy-mark">L<span>/</span>S</div>
+                <div class="appointment-card">
+                  <small>PRÓXIMO HORÁRIO</small>
+                  <strong>14:30</strong>
+                  <span>Corte + barba</span>
+                  <i></i>
+                </div>
+                <div class="gold-ring"></div>
+                <span class="visual-number">03</span>
+                <div class="visual-pill">MOBILE FIRST</div>
+              </div>
+
+              <div class="project-content">
+                <div class="project-meta">
+                  <span>SITE COMERCIAL</span>
+                  <span>2026</span>
+                </div>
+                <h3>Lucendy Style</h3>
+                <p>
+                  Experiência digital para barbearia, pensada para mobile e acesso rápido aos serviços e canais da marca.
+                </p>
+                <ul class="tag-list" aria-label="Tecnologias do Lucendy Style">
+                  <li>React</li><li>TypeScript</li><li>Vite</li><li>UX para dispositivos móveis</li>
+                </ul>
+                <div class="project-actions">
+                  <a href="https://lucendystyle.vercel.app/" target="_blank" rel="noopener noreferrer" aria-label="Ver Lucendy Style (abre em nova aba)">Ver projeto <span aria-hidden="true">↗</span></a>
+                  <a href="https://github.com/Guilhermegg-06/lucendy_style" target="_blank" rel="noopener noreferrer" aria-label="Código do Lucendy Style no GitHub (abre em nova aba)">Código <span aria-hidden="true">↗</span></a>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <a
+          class="all-projects magnetic"
+          href="https://github.com/Guilhermegg-06?tab=repositories"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Explorar todos os repositórios no GitHub (abre em nova aba)"
+          data-reveal
+        >
+          <span>Explorar todos os repositórios</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      </section>
+      <section class="section contact" id="contato" aria-labelledby="contact-title">
+        <div class="contact-panel spotlight" data-reveal>
+          <div class="contact-panel__orb" aria-hidden="true"></div>
+          <div class="contact-panel__top">
+            <span class="section-index">03 / CONTATO</span>
+            <span class="contact-status"><i aria-hidden="true"></i> DISPONÍVEL AGORA</span>
+          </div>
+
+          <div class="contact-panel__body">
+            <h2 id="contact-title">Tem uma oportunidade<br />ou uma ideia?</h2>
+            <p>
+              Estou buscando meu primeiro desafio profissional em tecnologia. Se meu perfil fizer sentido para seu time ou projeto, vamos conversar.
+            </p>
+            <div class="contact-actions">
+              <a class="button button--light magnetic" href="mailto:ggdev0001@gmail.com">
+                <span>Enviar e-mail</span><span aria-hidden="true">↗</span>
+              </a>
+              <a
+                class="button button--contact-ghost magnetic"
+                href="https://wa.me/5582996352699"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Conversar pelo WhatsApp (abre em nova aba)"
+              >
+                <span>WhatsApp</span><span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="contact-panel__footer">
+            <button class="copy-email" type="button" data-copy-email="ggdev0001@gmail.com">
+              <span>ggdev0001@gmail.com</span>
+              <b>Copiar</b>
+            </button>
+            <span class="copy-status" role="status" aria-live="polite"></span>
+          </div>
+        </div>
+
+        <div class="social-dock" aria-label="Redes e contatos" data-reveal>
+          <a href="https://github.com/Guilhermegg-06" target="_blank" rel="noopener noreferrer" aria-label="GitHub (abre em nova aba)">
+            <span class="social-icon" aria-hidden="true">GH</span><span>GitHub</span><i aria-hidden="true">↗</i>
+          </a>
+          <a href="https://www.linkedin.com/in/guilherme-araujo-620006340/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (abre em nova aba)">
+            <span class="social-icon" aria-hidden="true">IN</span><span>LinkedIn</span><i aria-hidden="true">↗</i>
+          </a>
+          <a href="mailto:ggdev0001@gmail.com">
+            <span class="social-icon" aria-hidden="true">@</span><span>E-mail</span><i aria-hidden="true">↗</i>
+          </a>
+          <a href="https://wa.me/5582996352699" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp (abre em nova aba)">
+            <span class="social-icon" aria-hidden="true">WA</span><span>WhatsApp</span><i aria-hidden="true">↗</i>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand" href="#inicio" aria-label="Voltar ao início"><span>GG</span><i aria-hidden="true"></i></a>
+      <p>Projetado para mostrar trabalho.<br />Construído para abrir caminhos.</p>
+      <div>
+        <span>© <span id="year">2026</span> Guilherme Araújo</span>
+        <a href="#inicio">Voltar ao topo ↑</a>
+      </div>
+    </footer>
+  </body>
+</html>
