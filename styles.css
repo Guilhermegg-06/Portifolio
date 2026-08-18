@@ -736,74 +736,35 @@ main,
   filter: blur(70px);
 }
 
-#hero-canvas {
+.particle-sphere-root {
   position: absolute;
   z-index: 2;
   inset: 0;
   width: 100%;
   height: 100%;
   opacity: 0;
-  cursor: grab;
+  overflow: hidden;
   touch-action: pan-y;
   transition: opacity 800ms ease;
 }
 
-#hero-canvas:active {
+.particle-sphere-root > div {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+.particle-sphere-root canvas {
+  cursor: grab;
+}
+
+.particle-sphere-root canvas:active {
   cursor: grabbing;
 }
 
-.hero-stage.is-loaded #hero-canvas {
+.hero-stage.is-loaded .particle-sphere-root {
   opacity: 1;
-}
-
-.orb-fallback {
-  position: absolute;
-  z-index: 1;
-  inset: 19%;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 44% 56% 48% 52%;
-  background:
-    radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.52), transparent 8%),
-    radial-gradient(circle at 62% 66%, rgba(var(--lime-rgb), 0.34), transparent 30%),
-    radial-gradient(circle, rgba(221, 214, 254, 0.72) 0 1px, transparent 1.5px) 0 0 / 9px 9px,
-    radial-gradient(circle at center, #2e1065, #10091d 70%);
-  box-shadow:
-    inset -28px -18px 58px rgba(0, 0, 0, 0.75),
-    inset 15px 18px 32px rgba(255, 255, 255, 0.12),
-    0 0 80px rgba(var(--lime-rgb), 0.09);
-  filter: saturate(0.92);
-  mask-image: radial-gradient(circle, black 0 66%, transparent 72%);
-  transform: rotateX(var(--stage-rx)) rotateY(var(--stage-ry));
-  animation: orb-float 8s ease-in-out infinite;
-  transition: opacity 500ms ease, transform 400ms var(--ease-out);
-}
-
-.hero-stage.is-loaded .orb-fallback {
-  opacity: 0;
-}
-
-.orb-fallback span {
-  position: absolute;
-  inset: -8%;
-  border: 1px solid rgba(var(--lime-rgb), 0.32);
-  border-radius: 50%;
-  transform: rotate(40deg) scaleY(0.32);
-}
-
-.orb-fallback span:nth-child(2) {
-  border-color: rgba(var(--cyan-rgb), 0.32);
-  transform: rotate(-48deg) scaleY(0.42);
-}
-
-.orb-fallback span:nth-child(3) {
-  inset: 12%;
-  border-color: rgba(255, 255, 255, 0.18);
-  transform: rotate(86deg) scaleY(0.6);
-}
-
-@keyframes orb-float {
-  0%, 100% { border-radius: 44% 56% 48% 52%; transform: translateY(0) rotate(0deg); }
-  50% { border-radius: 53% 47% 57% 43%; transform: translateY(-12px) rotate(8deg); }
 }
 
 .float-chip {
@@ -3001,10 +2962,6 @@ main,
   .motion-ready [data-reveal],
   .motion-ready [data-reveal].is-visible {
     opacity: 1;
-    transform: none;
-  }
-
-  .orb-fallback {
     transform: none;
   }
 
