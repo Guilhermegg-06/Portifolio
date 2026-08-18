@@ -416,18 +416,10 @@ async function mountOfficialParticleSphere() {
     if (!host.isConnected) return;
 
     const particleSphereRoot = createRoot(host);
-    const canvasObserver = new MutationObserver(() => {
-      const canvas = host.querySelector("canvas");
-      if (!canvas || canvas.width <= 0 || canvas.height <= 0) return;
-      heroStage.classList.add("is-loaded");
-      canvasObserver.disconnect();
-    });
-
-    canvasObserver.observe(host, { childList: true, subtree: true });
     particleSphereRoot.render(
       createElement(ParticleSphere, {
         particlesCount: 10000,
-        particleScale: 8,
+        particleScale: 10,
         rotationDirection: "clockwise",
         speed: 20,
         scale: 10,
@@ -439,13 +431,12 @@ async function mountOfficialParticleSphere() {
         cursorRadiusUI: 75,
         cursorStrengthUI: 10,
         clickForce: 5,
-        sphereColor: "#C4B5FD",
+        sphereColor: "#E9D5FF",
       }),
     );
 
     window.addEventListener("pagehide", (event) => {
       if (event.persisted) return;
-      canvasObserver.disconnect();
       particleSphereRoot.unmount();
     }, { once: true });
   } catch (error) {
