@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import { cloudflare } from "@cloudflare/vite-plugin";
 
 export default defineConfig({
+  assetsInclude: ["**/*.glb"],
   plugins: [
     cloudflare({ viteEnvironment: { name: "server" } }),
   ],

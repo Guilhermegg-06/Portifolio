@@ -1330,6 +1330,75 @@ main,
   font: 500 clamp(0.8rem, 1.3vw, 1rem)/1.9 var(--font-mono);
 }
 
+.bento-card--lanyard {
+  grid-column: span 12;
+  display: grid;
+  grid-template-columns: minmax(240px, 0.58fr) minmax(0, 1.42fr);
+  min-height: 620px;
+  padding: 0;
+  isolation: isolate;
+  background:
+    radial-gradient(620px circle at 72% 46%, rgba(var(--lime-rgb), 0.12), transparent 58%),
+    linear-gradient(145deg, rgba(76, 29, 149, 0.08), rgba(255, 255, 255, 0.018));
+}
+
+.lanyard-intro {
+  align-self: end;
+  padding: 44px 0 44px 44px;
+}
+
+.lanyard-intro h3 {
+  max-width: 350px;
+  margin: 24px 0 14px;
+  font-size: clamp(2rem, 3.4vw, 3.35rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.lanyard-intro p {
+  margin: 0;
+  color: var(--muted);
+  font: 500 10px/1.5 var(--font-mono);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.lanyard-mount {
+  width: 100%;
+  min-width: 0;
+  min-height: 620px;
+  overflow: hidden;
+  touch-action: pan-y;
+  opacity: 0;
+  transition: opacity 700ms var(--ease-out);
+}
+
+.bento-card--lanyard.is-loaded .lanyard-mount {
+  opacity: 1;
+}
+
+.lanyard-mount .lanyard-wrapper {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+}
+
+.lanyard-mount canvas {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none;
+}
+
+.bento-card--lanyard.is-motion-disabled,
+.bento-card--lanyard.has-load-error {
+  min-height: 260px;
+}
+
+.bento-card--lanyard.is-motion-disabled .lanyard-mount,
+.bento-card--lanyard.has-load-error .lanyard-mount {
+  min-height: 0;
+}
+
 .code-muted { color: #b585df; }
 .code-accent { color: var(--lime); }
 .code-cyan { color: var(--cyan); }
@@ -2379,6 +2448,19 @@ main,
     grid-column: span 12;
   }
 
+  .bento-card--lanyard {
+    grid-template-columns: 1fr;
+  }
+
+  .lanyard-intro {
+    max-width: 620px;
+    padding: 38px 38px 0;
+  }
+
+  .lanyard-mount {
+    min-height: 560px;
+  }
+
   .bento-card--status {
     min-height: 390px;
   }
@@ -2669,6 +2751,22 @@ main,
   .bento-card--code pre {
     padding: 24px 18px;
     font-size: 0.72rem;
+  }
+
+  .bento-card--lanyard {
+    min-height: auto;
+  }
+
+  .lanyard-intro {
+    padding: 30px 22px 0;
+  }
+
+  .lanyard-intro h3 {
+    font-size: 2.1rem;
+  }
+
+  .lanyard-mount {
+    min-height: 490px;
   }
 
   .projects {

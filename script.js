@@ -70,6 +70,63 @@ async function mountOfficialColorBends() {
 
 mountOfficialColorBends();
 
+function mountOfficialLanyard() {
+  const host = document.getElementById("lanyard-root");
+  if (!host) return;
+
+  if (reduceMotion.matches || saveData) {
+    host.closest(".bento-card--lanyard")?.classList.add("is-motion-disabled");
+    return;
+  }
+
+  let lanyardRoot;
+  let hasMounted = false;
+
+  const renderLanyard = async () => {
+    if (hasMounted || !host.isConnected) return;
+    hasMounted = true;
+
+    try {
+      const [{ createElement }, { createRoot }, { default: Lanyard }] = await Promise.all([
+        import("react"),
+        import("react-dom/client"),
+        import("./components/Lanyard/Lanyard.jsx"),
+      ]);
+      if (!host.isConnected) return;
+
+      lanyardRoot = createRoot(host);
+      lanyardRoot.render(createElement(Lanyard, { transparent: true }));
+      host.closest(".bento-card--lanyard")?.classList.add("is-loaded");
+    } catch (error) {
+      hasMounted = false;
+      host.closest(".bento-card--lanyard")?.classList.add("has-load-error");
+      console.warn("O Lanyard oficial não pôde ser carregado.", error);
+    }
+  };
+
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        renderLanyard();
+      },
+      { rootMargin: "420px 0px", threshold: 0.01 },
+    );
+    observer.observe(host);
+
+    window.addEventListener("pagehide", (event) => {
+      if (event.persisted) return;
+      observer.disconnect();
+      lanyardRoot?.unmount();
+    }, { once: true });
+  } else {
+    renderLanyard();
+  }
+}
+
+mountOfficialLanyard();
+
 function mountSplashCursor() {
   const canvas = document.getElementById("splash-cursor-canvas");
   if (!canvas || reduceMotion.matches || saveData) return;
