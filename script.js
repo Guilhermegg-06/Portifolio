@@ -17,7 +17,9 @@ document.getElementById("year").textContent = String(new Date().getFullYear());
 
 async function mountOfficialColorBends() {
   const host = document.getElementById("color-bends-root");
-  if (!host || reduceMotion.matches || saveData) return;
+  if (!host || saveData) return;
+
+  const shouldAnimate = !reduceMotion.matches;
 
   try {
     const [{ createElement }, { createRoot }, { default: ColorBends }] = await Promise.all([
@@ -33,18 +35,18 @@ async function mountOfficialColorBends() {
         className: "color-bends__canvas",
         colors: ["#2E1065", "#4C1D95", "#6D28D9", "#7C3AED", "#8B5CF6"],
         rotation: 90,
-        speed: 0.08,
+        speed: shouldAnimate ? 0.1 : 0,
         scale: 1.05,
         frequency: 0.85,
-        warpStrength: 0.55,
-        mouseInfluence: 0.2,
-        noise: 0.035,
-        parallax: 0.18,
+        warpStrength: 1,
+        mouseInfluence: shouldAnimate ? 0.15 : 0,
+        noise: 0.03,
+        parallax: shouldAnimate ? 0.1 : 0,
         iterations: 1,
-        intensity: 0.65,
-        bandWidth: 4.5,
+        intensity: 1.35,
+        bandWidth: 6,
         transparent: true,
-        autoRotate: 0.1,
+        autoRotate: shouldAnimate ? 0.1 : 0,
       }),
     );
 
@@ -56,7 +58,9 @@ async function mountOfficialColorBends() {
         clientY: event.clientY,
       }));
     };
-    window.addEventListener("pointermove", forwardPointer, { passive: true });
+    if (shouldAnimate) {
+      window.addEventListener("pointermove", forwardPointer, { passive: true });
+    }
 
     window.addEventListener("pagehide", (event) => {
       if (event.persisted) return;

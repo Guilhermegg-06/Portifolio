@@ -15,7 +15,7 @@
   --cyan: #c4b5fd;
   --cyan-rgb: 196, 181, 253;
   --gold: #a78bfa;
-  --color-bends-opacity: 0.2;
+  --color-bends-opacity: 0.35;
   --radius-sm: 14px;
   --radius-md: 24px;
   --radius-lg: 34px;
@@ -2509,7 +2509,7 @@ main,
     --container: calc(100% - 28px);
     --radius-md: 20px;
     --radius-lg: 24px;
-    --color-bends-opacity: 0.18;
+    --color-bends-opacity: 0.35;
   }
 
   html {
@@ -2995,10 +2995,6 @@ main,
   }
 
   .splash-cursor {
-    display: none;
-  }
-
-  .color-bends {
     display: none;
   }
 
