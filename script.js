@@ -15,6 +15,61 @@ function loadThree() {
 root.classList.add("motion-ready");
 document.getElementById("year").textContent = String(new Date().getFullYear());
 
+async function mountOfficialColorBends() {
+  const host = document.getElementById("color-bends-root");
+  if (!host || reduceMotion.matches || saveData) return;
+
+  try {
+    const [{ createElement }, { createRoot }, { default: ColorBends }] = await Promise.all([
+      import("react"),
+      import("react-dom/client"),
+      import("./components/ColorBends/ColorBends.jsx"),
+    ]);
+    if (!host.isConnected) return;
+
+    const colorBendsRoot = createRoot(host);
+    colorBendsRoot.render(
+      createElement(ColorBends, {
+        className: "color-bends__canvas",
+        colors: ["#2E1065", "#4C1D95", "#6D28D9", "#7C3AED", "#8B5CF6"],
+        rotation: 90,
+        speed: 0.08,
+        scale: 1.05,
+        frequency: 0.85,
+        warpStrength: 0.55,
+        mouseInfluence: 0.2,
+        noise: 0.035,
+        parallax: 0.18,
+        iterations: 1,
+        intensity: 0.65,
+        bandWidth: 4.5,
+        transparent: true,
+        autoRotate: 0.1,
+      }),
+    );
+
+    const forwardPointer = (event) => {
+      const container = host.querySelector(".color-bends-container");
+      if (!container) return;
+      container.dispatchEvent(new PointerEvent("pointermove", {
+        clientX: event.clientX,
+        clientY: event.clientY,
+      }));
+    };
+    window.addEventListener("pointermove", forwardPointer, { passive: true });
+
+    window.addEventListener("pagehide", (event) => {
+      if (event.persisted) return;
+      window.removeEventListener("pointermove", forwardPointer);
+      colorBendsRoot.unmount();
+    }, { once: true });
+  } catch (error) {
+    console.warn("O Color Bends oficial não pôde ser carregado.", error);
+  }
+}
+
+mountOfficialColorBends();
+
 function mountSplashCursor() {
   const canvas = document.getElementById("splash-cursor-canvas");
   if (!canvas || reduceMotion.matches || saveData) return;
@@ -291,241 +346,6 @@ if (heroStage) {
       chip.style.setProperty("--chip-y", "0px");
     });
   });
-}
-
-const colorBendsConfig = Object.freeze({
-  colors: ["#ff5c7a", "#8a5cff", "#00ffd1"],
-  rotation: 90,
-  speed: 0.2,
-  scale: 1,
-  frequency: 1,
-  warpStrength: 1,
-  mouseInfluence: 1,
-  noise: 0.15,
-  parallax: 0.5,
-  iterations: 1,
-  intensity: 1.5,
-  bandWidth: 6,
-  transparent: true,
-  autoRotate: 0,
-  color: "#A855F7",
-});
-
-const colorBendsVertexShader = `
-  varying vec2 vUv;
-  void main() {
-    vUv = uv;
-    gl_Position = vec4(position, 1.0);
-  }
-`;
-
-const colorBendsFragmentShader = `
-  #define MAX_COLORS 8
-  uniform vec2 uCanvas;
-  uniform float uTime;
-  uniform float uSpeed;
-  uniform vec2 uRot;
-  uniform int uColorCount;
-  uniform vec3 uColors[MAX_COLORS];
-  uniform int uTransparent;
-  uniform float uScale;
-  uniform float uFrequency;
-  uniform float uWarpStrength;
-  uniform vec2 uPointer;
-  uniform float uMouseInfluence;
-  uniform float uParallax;
-  uniform float uNoise;
-  uniform int uIterations;
-  uniform float uIntensity;
-  uniform float uBandWidth;
-  varying vec2 vUv;
-
-  void main() {
-    float t = uTime * uSpeed;
-    vec2 p = vUv * 2.0 - 1.0;
-    p += uPointer * uParallax * 0.1;
-    vec2 rp = vec2(p.x * uRot.x - p.y * uRot.y, p.x * uRot.y + p.y * uRot.x);
-    vec2 q = vec2(rp.x * (uCanvas.x / uCanvas.y), rp.y);
-    q /= max(uScale, 0.0001);
-    q /= 0.5 + 0.2 * dot(q, q);
-    q += 0.2 * cos(t) - 7.56;
-    q += (uPointer - rp) * uMouseInfluence * 0.2;
-
-    for (int j = 0; j < 5; j++) {
-      if (j >= uIterations - 1) break;
-      vec2 rr = sin(1.5 * (q.yx * uFrequency) + 2.0 * cos(q * uFrequency));
-      q += (rr - q) * 0.15;
-    }
-
-    vec2 s = q;
-    vec3 sumColor = vec3(0.0);
-    float cover = 0.0;
-    for (int i = 0; i < MAX_COLORS; i++) {
-      if (i >= uColorCount) break;
-      s -= 0.01;
-      vec2 r = sin(1.5 * (s.yx * uFrequency) + 2.0 * cos(s * uFrequency));
-      float m0 = length(r + sin(5.0 * r.y * uFrequency - 3.0 * t + float(i)) / 4.0);
-      float warpBase = clamp(uWarpStrength, 0.0, 1.0);
-      float warpMix = pow(warpBase, 0.3);
-      float gain = 1.0 + max(uWarpStrength - 1.0, 0.0);
-      vec2 warped = s + (r - s) * warpBase * gain;
-      float m1 = length(warped + sin(5.0 * warped.y * uFrequency - 3.0 * t + float(i)) / 4.0);
-      float m = mix(m0, m1, warpMix);
-      float width = 1.0 - exp(-uBandWidth / exp(uBandWidth * m));
-      sumColor += uColors[i] * width;
-      cover = max(cover, width);
-    }
-
-    vec3 color = clamp(sumColor, 0.0, 1.0) * uIntensity;
-    float alpha = uTransparent > 0 ? cover : 1.0;
-
-    if (uNoise > 0.0001) {
-      float grain = fract(sin(dot(gl_FragCoord.xy + vec2(uTime), vec2(12.9898, 78.233))) * 43758.5453123);
-      color = clamp(color + (grain - 0.5) * uNoise, 0.0, 1.0);
-    }
-
-    vec3 rgb = uTransparent > 0 ? color * alpha : color;
-    gl_FragColor = vec4(rgb, alpha);
-  }
-`;
-
-async function initColorBends() {
-  const canvas = document.getElementById("color-bends-canvas");
-  if (!canvas || reduceMotion.matches || saveData) return;
-
-  try {
-    const THREE = await loadThree();
-    const renderer = new THREE.WebGLRenderer({
-      canvas,
-      alpha: true,
-      antialias: false,
-      powerPreference: "high-performance",
-    });
-    renderer.outputColorSpace = THREE.SRGBColorSpace;
-    renderer.setClearColor(0x000000, 0);
-
-    const scene = new THREE.Scene();
-    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const geometry = new THREE.PlaneGeometry(2, 2);
-    const uniformColors = Array.from({ length: 8 }, () => new THREE.Vector3());
-    const toVector = (hex) => {
-      const value = hex.replace("#", "");
-      return new THREE.Vector3(
-        Number.parseInt(value.slice(0, 2), 16) / 255,
-        Number.parseInt(value.slice(2, 4), 16) / 255,
-        Number.parseInt(value.slice(4, 6), 16) / 255,
-      );
-    };
-    colorBendsConfig.colors.forEach((color, index) => uniformColors[index].copy(toVector(color)));
-
-    const material = new THREE.ShaderMaterial({
-      vertexShader: colorBendsVertexShader,
-      fragmentShader: colorBendsFragmentShader,
-      transparent: true,
-      premultipliedAlpha: true,
-      uniforms: {
-        uCanvas: { value: new THREE.Vector2(1, 1) },
-        uTime: { value: 0 },
-        uSpeed: { value: colorBendsConfig.speed },
-        uRot: { value: new THREE.Vector2(1, 0) },
-        uColorCount: { value: colorBendsConfig.colors.length },
-        uColors: { value: uniformColors },
-        uTransparent: { value: colorBendsConfig.transparent ? 1 : 0 },
-        uScale: { value: colorBendsConfig.scale },
-        uFrequency: { value: colorBendsConfig.frequency },
-        uWarpStrength: { value: colorBendsConfig.warpStrength },
-        uPointer: { value: new THREE.Vector2() },
-        uMouseInfluence: { value: colorBendsConfig.mouseInfluence },
-        uParallax: { value: colorBendsConfig.parallax },
-        uNoise: { value: colorBendsConfig.noise },
-        uIterations: { value: colorBendsConfig.iterations },
-        uIntensity: { value: colorBendsConfig.intensity },
-        uBandWidth: { value: colorBendsConfig.bandWidth },
-      },
-    });
-    scene.add(new THREE.Mesh(geometry, material));
-
-    const pointerTarget = new THREE.Vector2();
-    const pointerCurrent = new THREE.Vector2();
-    const clock = new THREE.Clock();
-    let frameId = 0;
-    let previousFrame = 0;
-    let cleanedUp = false;
-    const frameInterval = compactViewport.matches ? 42 : 32;
-
-    function resizeBackground() {
-      const width = Math.max(1, window.innerWidth);
-      const height = Math.max(1, window.innerHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, compactViewport.matches ? 1 : 1.2));
-      renderer.setSize(width, height, false);
-      material.uniforms.uCanvas.value.set(width, height);
-    }
-
-    function handlePointerMove(event) {
-      if (!finePointer.matches) return;
-      pointerTarget.set(
-        (event.clientX / Math.max(1, window.innerWidth)) * 2 - 1,
-        -((event.clientY / Math.max(1, window.innerHeight)) * 2 - 1),
-      );
-    }
-
-    function drawBackground(time) {
-      if (cleanedUp || document.hidden || reduceMotion.matches) {
-        frameId = 0;
-        return;
-      }
-      frameId = requestAnimationFrame(drawBackground);
-      if (time - previousFrame < frameInterval) return;
-      previousFrame = time;
-      const delta = Math.min(clock.getDelta(), 0.05);
-      material.uniforms.uTime.value = clock.elapsedTime;
-      const rotation = (colorBendsConfig.rotation % 360) + colorBendsConfig.autoRotate * clock.elapsedTime;
-      const rotationRadians = (rotation * Math.PI) / 180;
-      material.uniforms.uRot.value.set(Math.cos(rotationRadians), Math.sin(rotationRadians));
-      pointerCurrent.lerp(pointerTarget, Math.min(1, delta * 8));
-      material.uniforms.uPointer.value.copy(pointerCurrent);
-      renderer.render(scene, camera);
-    }
-
-    function resumeBackground() {
-      if (!frameId && !document.hidden && !reduceMotion.matches && !cleanedUp) {
-        clock.getDelta();
-        previousFrame = performance.now() - frameInterval;
-        frameId = requestAnimationFrame(drawBackground);
-      }
-    }
-
-    const handleVisibilityChange = () => {
-      if (document.hidden && frameId) {
-        cancelAnimationFrame(frameId);
-        frameId = 0;
-      } else {
-        resumeBackground();
-      }
-    };
-
-    resizeBackground();
-    renderer.render(scene, camera);
-    window.addEventListener("resize", resizeBackground, { passive: true });
-    window.addEventListener("pointermove", handlePointerMove, { passive: true });
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-    resumeBackground();
-
-    window.addEventListener("pagehide", (event) => {
-      if (event.persisted) return;
-      cleanedUp = true;
-      if (frameId) cancelAnimationFrame(frameId);
-      window.removeEventListener("resize", resizeBackground);
-      window.removeEventListener("pointermove", handlePointerMove);
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-      geometry.dispose();
-      material.dispose();
-      renderer.dispose();
-      renderer.forceContextLoss();
-    }, { once: true });
-  } catch (error) {
-    console.warn("O fundo animado não pôde ser carregado; mantendo o gradiente estático.", error);
-  }
 }
 
 async function initThreeScene() {
@@ -868,8 +688,6 @@ async function initThreeScene() {
     console.warn("A esfera de partículas não pôde ser carregada; mantendo o fallback visual.", error);
   }
 }
-
-initColorBends();
 
 if (heroStage && "IntersectionObserver" in window) {
   const sceneLoader = new IntersectionObserver(

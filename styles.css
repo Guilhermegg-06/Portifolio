@@ -15,7 +15,7 @@
   --cyan: #c4b5fd;
   --cyan-rgb: 196, 181, 253;
   --gold: #a78bfa;
-  --color-bends-opacity: 0.76;
+  --color-bends-opacity: 0.2;
   --radius-sm: 14px;
   --radius-md: 24px;
   --radius-lg: 34px;
@@ -109,25 +109,18 @@ canvas {
   position: fixed;
   z-index: 0;
   inset: 0;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   pointer-events: none;
   opacity: var(--color-bends-opacity);
-  background:
-    radial-gradient(circle at 52% 38%, rgba(168, 85, 247, 0.25), transparent 42rem),
-    #050407;
+  background: none;
 }
 
-.color-bends::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 42%, transparent 28%, rgba(5, 4, 7, 0.16) 100%);
-}
-
-#color-bends-canvas {
+.color-bends .color-bends-container,
+.color-bends .color-bends__canvas {
   width: 100%;
   height: 100%;
-  filter: saturate(1.18) contrast(1.08);
 }
 
 main,
@@ -2434,7 +2427,7 @@ main,
     --container: calc(100% - 28px);
     --radius-md: 20px;
     --radius-lg: 24px;
-    --color-bends-opacity: 0.62;
+    --color-bends-opacity: 0.18;
   }
 
   html {
@@ -2908,10 +2901,6 @@ main,
   }
 
   .color-bends {
-    --color-bends-opacity: 0.28;
-  }
-
-  #color-bends-canvas {
     display: none;
   }
 
