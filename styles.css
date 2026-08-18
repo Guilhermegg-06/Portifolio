@@ -987,10 +987,45 @@ main,
 
 .bento-card--profile {
   grid-column: span 8;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+}
+
+.bento-card--profile::before {
+  display: none;
+}
+
+.profile-card__motion {
+  --profile-rx: 0deg;
+  --profile-ry: 0deg;
+  --profile-photo-x: 0px;
+  --profile-photo-y: 0px;
   display: grid;
   grid-template-columns: minmax(190px, 0.78fr) minmax(0, 1.22fr);
+  width: 100%;
   min-height: 410px;
   padding: 16px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background:
+    radial-gradient(520px circle at var(--spot-x) var(--spot-y), rgba(var(--lime-rgb), 0.09), transparent 42%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.018));
+  box-shadow: 0 20px 70px rgba(0, 0, 0, 0.18);
+  transform: perspective(1200px) rotateX(var(--profile-rx)) rotateY(var(--profile-ry));
+  transform-style: preserve-3d;
+  transition:
+    transform 420ms var(--ease-out),
+    border-color 220ms ease,
+    box-shadow 420ms var(--ease-out);
+  will-change: transform;
+}
+
+.bento-card--profile:hover .profile-card__motion,
+.bento-card--profile:focus-within .profile-card__motion {
+  border-color: rgba(var(--lime-rgb), 0.32);
+  box-shadow: 0 28px 90px rgba(46, 16, 101, 0.24);
 }
 
 .profile-photo {
@@ -999,6 +1034,9 @@ main,
   overflow: hidden;
   border-radius: 17px;
   background: #111;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+  transform: translateZ(28px);
+  transform-style: preserve-3d;
 }
 
 .profile-photo::after {
@@ -1017,13 +1055,14 @@ main,
   object-fit: cover;
   object-position: center 22%;
   filter: saturate(0.72) contrast(1.05);
-  transform: scale(1.02);
+  transform: translate3d(var(--profile-photo-x), var(--profile-photo-y), 0) scale(1.09);
   transition: transform 800ms var(--ease-out), filter 500ms ease;
+  will-change: transform;
 }
 
 .bento-card--profile:hover .profile-photo img {
   filter: saturate(0.92) contrast(1.04);
-  transform: scale(1.055);
+  transform: translate3d(var(--profile-photo-x), var(--profile-photo-y), 0) scale(1.135);
 }
 
 .profile-photo > span {
@@ -1045,6 +1084,7 @@ main,
   flex-direction: column;
   justify-content: center;
   padding: 34px 34px 28px 40px;
+  transform: translateZ(16px);
 }
 
 .profile-copy h3,
@@ -1077,6 +1117,134 @@ main,
 .profile-location > span:first-child {
   color: var(--lime);
   font-size: 16px;
+}
+
+.profile-socials {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(44px, 1fr));
+  width: min(100%, 350px);
+  min-height: 58px;
+  margin-top: 28px;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(var(--lime-rgb), 0.28);
+  border-radius: 15px;
+  background: rgba(7, 5, 11, 0.86);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+  transition: border-color 240ms ease, box-shadow 320ms var(--ease-out), transform 320ms var(--ease-out);
+}
+
+.profile-socials::before,
+.profile-socials::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  pointer-events: none;
+  transition: transform 300ms var(--ease-out), opacity 300ms ease;
+}
+
+.profile-socials::before {
+  left: 0;
+  background: linear-gradient(120deg, #2e1065, #4c1d95);
+}
+
+.profile-socials::after {
+  right: 0;
+  background: linear-gradient(120deg, #4c1d95, #7c3aed);
+}
+
+.profile-socials__label {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--text);
+  font: 700 10px/1 var(--font-mono);
+  letter-spacing: 0.19em;
+  pointer-events: none;
+  transition: opacity 200ms ease, transform 260ms var(--ease-out);
+}
+
+.profile-socials a {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 56px;
+  color: var(--muted-strong);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  opacity: 0;
+  transform: translateY(7px) scale(0.92);
+  transition:
+    color 200ms ease,
+    background-color 200ms ease,
+    opacity 220ms ease,
+    transform 300ms var(--ease-spring);
+}
+
+.profile-socials a:last-child {
+  border-right: 0;
+}
+
+.profile-socials a span {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(var(--lime-rgb), 0.24);
+  border-radius: 10px;
+  font: 700 9px/1 var(--font-mono);
+}
+
+.profile-socials:hover,
+.profile-socials:focus-within {
+  border-color: rgba(var(--lime-rgb), 0.54);
+  box-shadow: 0 16px 42px rgba(76, 29, 149, 0.27);
+  transform: translateY(-2px);
+}
+
+.profile-socials:hover::before,
+.profile-socials:focus-within::before {
+  opacity: 0.5;
+  transform: translateY(-105%);
+}
+
+.profile-socials:hover::after,
+.profile-socials:focus-within::after {
+  opacity: 0.5;
+  transform: translateY(105%);
+}
+
+.profile-socials:hover .profile-socials__label,
+.profile-socials:focus-within .profile-socials__label {
+  opacity: 0;
+  transform: scale(0.94);
+}
+
+.profile-socials:hover a,
+.profile-socials:focus-within a {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.profile-socials a:hover,
+.profile-socials a:focus-visible {
+  color: #e9d5ff;
+  background: rgba(var(--lime-rgb), 0.16);
+  animation: profile-social-bounce 420ms linear;
+}
+
+@keyframes profile-social-bounce {
+  40% { transform: scale(1.16); }
+  62% { transform: scale(0.92); }
+  82% { transform: scale(1.07); }
+  100% { transform: scale(1); }
 }
 
 .bento-card--status {
@@ -2674,6 +2842,10 @@ main,
   }
 
   .bento-card--profile {
+    padding: 0;
+  }
+
+  .profile-card__motion {
     grid-template-columns: 1fr;
     padding: 10px;
   }
@@ -2684,6 +2856,17 @@ main,
 
   .profile-copy {
     padding: 30px 17px 24px;
+  }
+
+  .profile-socials::before,
+  .profile-socials::after,
+  .profile-socials__label {
+    display: none;
+  }
+
+  .profile-socials a {
+    opacity: 1;
+    transform: none;
   }
 
   .profile-copy h3,
@@ -2921,6 +3104,26 @@ main,
     transform: none !important;
   }
 
+  .profile-card__motion {
+    transform: none !important;
+  }
+
+  .profile-photo img,
+  .bento-card--profile:hover .profile-photo img {
+    transform: scale(1.08);
+  }
+
+  .profile-socials::before,
+  .profile-socials::after,
+  .profile-socials__label {
+    display: none;
+  }
+
+  .profile-socials a {
+    opacity: 1;
+    transform: none;
+  }
+
   .project-visual::after,
   .bento-card::before,
   .project-card::before,
@@ -2963,5 +3166,14 @@ main,
 
   .float-chip {
     translate: none;
+  }
+
+  .profile-card__motion,
+  .profile-photo,
+  .profile-photo img,
+  .bento-card--profile:hover .profile-photo img,
+  .profile-socials,
+  .profile-socials a {
+    transform: none;
   }
 }

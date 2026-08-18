@@ -283,6 +283,32 @@ document.querySelectorAll("[data-tilt]").forEach((card) => {
   });
 });
 
+document.querySelectorAll("[data-profile-tilt]").forEach((card) => {
+  const resetProfileMotion = () => {
+    card.style.setProperty("--profile-ry", "0deg");
+    card.style.setProperty("--profile-rx", "0deg");
+    card.style.setProperty("--profile-photo-x", "0px");
+    card.style.setProperty("--profile-photo-y", "0px");
+  };
+
+  card.addEventListener(
+    "pointermove",
+    (event) => {
+      if (!finePointer.matches || reduceMotion.matches) return;
+      const rect = card.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+      card.style.setProperty("--profile-ry", x * 4.2 + "deg");
+      card.style.setProperty("--profile-rx", y * -3.4 + "deg");
+      card.style.setProperty("--profile-photo-x", x * 12 + "px");
+      card.style.setProperty("--profile-photo-y", y * 10 + "px");
+    },
+    { passive: true },
+  );
+
+  card.addEventListener("pointerleave", resetProfileMotion);
+});
+
 document.querySelectorAll(".magnetic").forEach((item) => {
   item.addEventListener(
     "pointermove",
